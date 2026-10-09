@@ -1,0 +1,11 @@
+{
+  "slug": "about",
+  "hidden": false,
+  "seo": { "title": "About", "description": "Who we are and what we do." },
+  "content": {
+    "template": "page",
+    "title": "About",
+    "intro": "A short introduction: who you are and what you do.",
+    "body": "<h2>Our story</h2><p>Tell visitors how it started, what you care about and why it matters to them. A few short paragraphs are enough.</p><h2>What we do</h2><ul><li>The first thing you offer</li><li>The second thing you offer</li><li>The third thing you offer</li></ul>"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "My site",
+  "seo": {
+    "en": {
+      "titleTemplate": "%s — My site",
+      "siteName": "My site",
+      "description": "A website built with Brease."
+    }
+  }
+}

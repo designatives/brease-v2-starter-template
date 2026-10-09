@@ -1,0 +1,27 @@
+{
+  "slug": "",
+  "hidden": false,
+  "seo": { "title": "My site", "description": "A website built with Brease." },
+  "content": {
+    "template": "home",
+    "hero": {
+      "eyebrow": "Welcome",
+      "title": "A website you can change by asking",
+      "text": "This is your new site. Open it in the Brease editor and tell the AI what you want: new texts, new pages, a different look. You review every change before it goes live.",
+      "cta": { "label": "Learn more", "href": "/about" }
+    },
+    "features": {
+      "title": "What you can do",
+      "items": [
+        { "title": "Edit the texts", "text": "Click any text on the page in the editor and change it. Your changes are saved as a draft until you publish them." },
+        { "title": "Add pages", "text": "Ask for a new page, such as Services or Pricing, and the AI builds it in the same style as the rest of the site." },
+        { "title": "Change the design", "text": "Colors, fonts and layouts can change too. Describe what you want and preview it before anyone else sees it." }
+      ]
+    },
+    "closing": {
+      "title": "Ready to make it yours?",
+      "text": "Replace this text with a sentence about you or your business.",
+      "cta": { "label": "Get in touch", "href": "/contact" }
+    }
+  }
+}

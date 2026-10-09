@@ -1,0 +1,6 @@
+{
+  "items": [
+    { "id": "nav_footer_about", "label": { "en": "About" }, "pageId": "pg_about" },
+    { "id": "nav_footer_contact", "label": { "en": "Contact" }, "pageId": "pg_contact" }
+  ]
+}

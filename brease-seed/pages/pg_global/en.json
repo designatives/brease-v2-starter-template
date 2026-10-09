@@ -1,0 +1,13 @@
+{
+  "slug": "_global",
+  "hidden": false,
+  "seo": { "robots": { "index": false, "follow": false } },
+  "content": {
+    "template": "global",
+    "siteName": "My site",
+    "footer": {
+      "text": "A website built with Brease.",
+      "copyright": "© 2026 My site"
+    }
+  }
+}

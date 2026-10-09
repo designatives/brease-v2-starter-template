@@ -1,0 +1,19 @@
+# dependencies / build
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# Brease working copy: inside a Brease sandbox the working copy is managed by Brease (the seed lives in brease-seed/)
+/.brease/
+
+# os / editor
+.DS_Store
+.vercel
+*.log

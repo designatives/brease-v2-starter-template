@@ -1,0 +1,7 @@
+{
+  "items": [
+    { "id": "nav_home", "label": { "en": "Home" }, "pageId": "pg_home" },
+    { "id": "nav_about", "label": { "en": "About" }, "pageId": "pg_about" },
+    { "id": "nav_contact", "label": { "en": "Contact" }, "pageId": "pg_contact" }
+  ]
+}

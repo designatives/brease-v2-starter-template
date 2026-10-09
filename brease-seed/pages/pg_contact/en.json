@@ -1,0 +1,11 @@
+{
+  "slug": "contact",
+  "hidden": false,
+  "seo": { "title": "Contact", "description": "How to reach us." },
+  "content": {
+    "template": "page",
+    "title": "Contact",
+    "intro": "We’d love to hear from you.",
+    "body": "<p>Email: <a href=\"mailto:hello@example.com\">hello@example.com</a></p><p>Phone: +1 555 0100</p><p>Address: 1 Example Street, Example City</p>"
+  }
+}
