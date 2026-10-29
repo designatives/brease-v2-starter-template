@@ -26,7 +26,7 @@ The site follows brease-client's "Recommended structure": one optional catch-all
 
 - New simple pages use the `page` template. A page that needs its own layout gets a new template.
 - `body` is HTML: `<p>`, `<h2>`, `<h3>`, lists, `<blockquote>`, with `<strong>`, `<em>` and `<a href>` inline.
-- `_global` is not `hidden` on purpose (the delivery API answers 404 for hidden pages); it carries `robots: noindex` and is never routed.
+- `_global` is not `hidden` on purpose (the delivery API answers 404 for hidden pages); it carries `robots: noindex` and is never routed. `getGlobal()` returns empty defaults, so the site renders before it exists.
 - Navigation `main` (header) and `footer` link to pages by `pageId`, so their URLs follow each locale.
 
 ## Picker attributes

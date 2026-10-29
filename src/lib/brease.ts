@@ -35,10 +35,14 @@ export const getPage = cache(
   },
 )
 
+/** Site-wide content, with empty defaults so the site renders before the `_global` page exists. */
 export const getGlobal = cache(async (locale: string): Promise<GlobalContent> => {
-  const page = await brease.getPage<GlobalContent>('_global', { locale })
-  if (!page) throw new Error('Brease: the _global page is missing')
-  return page.content
+  const content = (await brease.getPage<Partial<GlobalContent>>('_global', { locale }))?.content
+  return {
+    template: 'global',
+    siteName: content?.siteName ?? '',
+    footer: { text: '', copyright: '', ...content?.footer },
+  }
 })
 
 /** A navigation's links in a locale (`main`: the header, `footer`: the footer). */
