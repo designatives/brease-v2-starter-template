@@ -202,8 +202,13 @@ h3 {
 
 /* basic pages */
 
-.article {
+.article,
+.text-section {
   padding: clamp(48px, 8vw, 96px) 0;
+}
+
+.article .text-section {
+  padding: 0;
 }
 
 .prose h2 {

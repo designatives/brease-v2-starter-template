@@ -1,0 +1,17 @@
+{
+  "name": "Text",
+  "description": "A block of text: an optional heading, an intro line and a formatted body.",
+  "fields": {
+    "type": "object",
+    "required": ["intro", "body"],
+    "properties": {
+      "heading": { "type": "string", "maxLength": 80 },
+      "intro": { "type": "string", "maxLength": 300 },
+      "body": {
+        "type": "string",
+        "format": "html",
+        "description": "HTML: <p>, <h2>, <h3>, <ul>/<ol>, <blockquote>; <strong>, <em> and <a href> inline"
+      }
+    }
+  }
+}

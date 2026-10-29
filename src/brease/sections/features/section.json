@@ -1,0 +1,23 @@
+{
+  "name": "Features",
+  "description": "A heading over a grid of cards, each with a title and a short text.",
+  "fields": {
+    "type": "object",
+    "required": ["title", "items"],
+    "properties": {
+      "title": { "type": "string", "maxLength": 80 },
+      "items": {
+        "type": "array",
+        "minItems": 3,
+        "items": {
+          "type": "object",
+          "required": ["title", "text"],
+          "properties": {
+            "title": { "type": "string", "maxLength": 60 },
+            "text": { "type": "string", "maxLength": 300 }
+          }
+        }
+      }
+    }
+  }
+}

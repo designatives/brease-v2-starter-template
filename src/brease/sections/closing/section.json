@@ -1,0 +1,20 @@
+{
+  "name": "Call to action",
+  "description": "A centered heading, a sentence and a button that invites visitors to act.",
+  "fields": {
+    "type": "object",
+    "required": ["title", "text", "cta"],
+    "properties": {
+      "title": { "type": "string", "maxLength": 80 },
+      "text": { "type": "string", "maxLength": 300 },
+      "cta": {
+        "type": "object",
+        "required": ["label", "href"],
+        "properties": {
+          "label": { "type": "string", "maxLength": 30 },
+          "href": { "type": "string" }
+        }
+      }
+    }
+  }
+}

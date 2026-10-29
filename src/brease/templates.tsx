@@ -3,9 +3,9 @@ import { toMetadata } from 'brease-client/next'
 import type { Metadata } from 'next'
 import React from 'react'
 
+import { Sections } from '@/brease/sections'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
-import { Article, Closing, Features, Hero } from '@/components/Sections'
 import { getGlobal, getLinks, PAGE_IDS } from '@/lib/brease'
 import type { BasicContent, HomeContent, PageContent } from '@/lib/content'
 
@@ -41,20 +41,26 @@ const home: Template = {
     const c = page.content as HomeContent
     return (
       <Shell locale={locale}>
-        <Hero c={c.hero} />
-        <Features c={c.features} />
-        <Closing c={c.closing} />
+        <Sections sections={c.sections} />
       </Shell>
     )
   },
 }
 
 const page: Template = {
-  render: async ({ page, locale }) => (
-    <Shell locale={locale}>
-      <Article c={page.content as BasicContent} />
-    </Shell>
-  ),
+  render: async ({ page, locale }) => {
+    const c = page.content as BasicContent
+    return (
+      <Shell locale={locale}>
+        <article className="article">
+          <div className="container narrow">
+            <h1 data-brease="title">{c.title}</h1>
+          </div>
+          <Sections sections={c.sections} />
+        </article>
+      </Shell>
+    )
+  },
 }
 
 export const templates: Record<string, Template> = { home, page }

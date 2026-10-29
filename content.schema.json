@@ -1,79 +1,75 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Page content",
-  "description": "Content JSON of every Brease page, per template (the `template` key). TypeScript mirror: src/lib/content.ts.",
-  "oneOf": [{ "$ref": "#/$defs/home" }, { "$ref": "#/$defs/page" }, { "$ref": "#/$defs/global" }],
+  "description": "Content JSON of every Brease page, per template (the `template` key). Section fields: src/brease/sections/<type>/section.json. TypeScript mirror: src/lib/content.ts.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/home"
+    },
+    {
+      "$ref": "#/$defs/page"
+    },
+    {
+      "$ref": "#/$defs/global"
+    }
+  ],
   "$defs": {
-    "link": {
-      "type": "object",
-      "required": ["label", "href"],
-      "properties": { "label": { "type": "string" }, "href": { "type": "string" } }
-    },
-    "html": {
-      "type": "string",
-      "description": "HTML: <p>, <h2>, <h3>, <ul>/<ol>, <blockquote>; <strong>, <em> and <a href> inline"
-    },
     "home": {
       "type": "object",
-      "required": ["template", "hero", "features", "closing"],
+      "required": ["template", "sections"],
       "properties": {
-        "template": { "const": "home" },
-        "hero": {
-          "type": "object",
-          "required": ["eyebrow", "title", "text", "cta"],
-          "properties": {
-            "eyebrow": { "type": "string" },
-            "title": { "type": "string" },
-            "text": { "type": "string" },
-            "cta": { "$ref": "#/$defs/link" }
-          }
+        "template": {
+          "const": "home"
         },
-        "features": {
-          "type": "object",
-          "required": ["title", "items"],
-          "properties": {
-            "title": { "type": "string" },
-            "items": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "required": ["title", "text"],
-                "properties": { "title": { "type": "string" }, "text": { "type": "string" } }
-              }
-            }
-          }
-        },
-        "closing": {
-          "type": "object",
-          "required": ["title", "text", "cta"],
-          "properties": {
-            "title": { "type": "string" },
-            "text": { "type": "string" },
-            "cta": { "$ref": "#/$defs/link" }
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type"]
           }
         }
       }
     },
     "page": {
       "type": "object",
-      "required": ["template", "title", "intro", "body"],
+      "required": ["template", "title", "sections"],
       "properties": {
-        "template": { "const": "page" },
-        "title": { "type": "string" },
-        "intro": { "type": "string" },
-        "body": { "$ref": "#/$defs/html" }
+        "template": {
+          "const": "page"
+        },
+        "title": {
+          "type": "string"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type"]
+          }
+        }
       }
     },
     "global": {
       "type": "object",
       "required": ["template", "siteName", "footer"],
       "properties": {
-        "template": { "const": "global" },
-        "siteName": { "type": "string" },
+        "template": {
+          "const": "global"
+        },
+        "siteName": {
+          "type": "string"
+        },
         "footer": {
           "type": "object",
           "required": ["text", "copyright"],
-          "properties": { "text": { "type": "string" }, "copyright": { "type": "string" } }
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "copyright": {
+              "type": "string"
+            }
+          }
         }
       }
     }

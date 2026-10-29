@@ -1,0 +1,21 @@
+{
+  "name": "Hero",
+  "description": "The page's opening banner with the main heading and a button. It holds the page's <h1>, so use at most one per page, at the top.",
+  "fields": {
+    "type": "object",
+    "required": ["eyebrow", "title", "text", "cta"],
+    "properties": {
+      "eyebrow": { "type": "string", "maxLength": 40 },
+      "title": { "type": "string", "maxLength": 80 },
+      "text": { "type": "string", "maxLength": 300 },
+      "cta": {
+        "type": "object",
+        "required": ["label", "href"],
+        "properties": {
+          "label": { "type": "string", "maxLength": 30 },
+          "href": { "type": "string" }
+        }
+      }
+    }
+  }
+}
