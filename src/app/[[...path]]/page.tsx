@@ -1,6 +1,8 @@
+import { customTags, jsonLd } from 'brease-client'
 import { toMetadata } from 'brease-client/next'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import React from 'react'
 
 import { templates } from '@/brease/templates'
 import { brease, getPage, ogLocale } from '@/lib/brease'
@@ -32,12 +34,34 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const loaded = await load(params)
   if (!loaded) return {}
-  const meta = loaded.template.metadata?.(loaded.page) ?? toMetadata(loaded.page.resolvedSeo)
+  const meta = toMetadata(loaded.page.resolvedSeo)
   return { ...meta, openGraph: { ...meta.openGraph, locale: ogLocale(loaded.locale) } }
 }
 
 export default async function Page({ params }: Props) {
   const loaded = await load(params)
   if (!loaded) notFound()
-  return loaded.template.render({ page: loaded.page, locale: loaded.locale })
+  const seo = loaded.page.resolvedSeo
+  return (
+    <>
+      {jsonLd(seo).map((item, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: item.json }}
+        />
+      ))}
+      {customTags(seo).map(({ tag: Tag, attrs, content }, i) => {
+        const props = Object.fromEntries(
+          Object.entries(attrs).map(([k, v]) => [k, v === '' ? true : v]),
+        )
+        return content ? (
+          <Tag key={i} {...props} dangerouslySetInnerHTML={{ __html: content }} />
+        ) : (
+          <Tag key={i} {...props} />
+        )
+      })}
+      {await loaded.template.render({ page: loaded.page, locale: loaded.locale })}
+    </>
+  )
 }

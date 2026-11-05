@@ -1,3 +1,4 @@
+import { sectionAttrs } from 'brease-client'
 import React from 'react'
 
 import type { FeaturesSection } from '@/lib/content'
@@ -5,7 +6,7 @@ import type { FeaturesSection } from '@/lib/content'
 export function Features({ section, index }: { section: FeaturesSection; index: number }) {
   const p = `sections.${index}`
   return (
-    <section className="features" data-brease-section={section.id} data-brease-block={section.type}>
+    <section className="features" {...sectionAttrs(section)}>
       <div className="container">
         <h2 data-brease={`${p}.title`}>{section.title}</h2>
         <div className="grid">

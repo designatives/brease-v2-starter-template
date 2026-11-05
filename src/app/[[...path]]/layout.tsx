@@ -1,10 +1,11 @@
+import { ga4Tag } from 'brease-client'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Script from 'next/script'
 import React from 'react'
 
 import { LocaleProvider } from '@/components/locale'
 import { brease, getGlobal, getSite, ogLocale } from '@/lib/brease'
-import { SITE_URL } from '@/lib/site'
 
 import '../styles.css'
 
@@ -36,9 +37,9 @@ export async function generateMetadata({ params }: Pick<Props, 'params'>): Promi
   const { locale } = await localeOf(params)
   const [site, global] = await Promise.all([getSite(), getGlobal(locale)])
   const seo = site.seo[locale] ?? {}
-  const siteName = seo.siteName || global.siteName
+  const siteName = seo.siteName || global.content.siteName
   return {
-    metadataBase: new URL(SITE_URL),
+    metadataBase: site.url ? new URL(site.url) : undefined,
     applicationName: siteName,
     description: seo.description || undefined,
     openGraph: { siteName, locale: ogLocale(locale), type: 'website' },
@@ -46,26 +47,21 @@ export async function generateMetadata({ params }: Pick<Props, 'params'>): Promi
   }
 }
 
-const overlay = {
-  src: process.env.NEXT_PUBLIC_BREASE_OVERLAY_URL,
-  site: process.env.NEXT_PUBLIC_BREASE_SITE_ID,
-  appOrigin: process.env.NEXT_PUBLIC_BREASE_APP_ORIGIN,
-}
-
 export default async function RootLayout({ children, params }: Props) {
-  const context = await localeOf(params)
+  const [context, site] = await Promise.all([localeOf(params), getSite()])
+  // GA4 when it's on in Brease; consent starts denied until a cookie banner calls grantAnalytics()
+  const ga = ga4Tag(site)
   return (
     <html lang={context.locale} className={sans.variable}>
       <body>
         <LocaleProvider value={context}>{children}</LocaleProvider>
-        {/* Brease on-site toolbar (comments); only when the loader is configured */}
-        {overlay.src && overlay.site && overlay.appOrigin && (
-          <script
-            src={overlay.src}
-            data-site={overlay.site}
-            data-app-origin={overlay.appOrigin}
-            async
-          />
+        {ga && (
+          <>
+            <Script src={ga.src} strategy="afterInteractive" />
+            <Script id="brease-ga4" strategy="afterInteractive">
+              {ga.inline}
+            </Script>
+          </>
         )}
       </body>
     </html>

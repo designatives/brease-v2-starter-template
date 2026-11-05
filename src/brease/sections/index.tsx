@@ -1,3 +1,4 @@
+import { sectionsAttrs } from 'brease-client'
 import React from 'react'
 
 import type { Section } from '@/lib/content'
@@ -21,7 +22,7 @@ export const sectionComponents: { [T in Section['type']]: React.ComponentType<Pr
 /** Renders `content.sections` in order; a type that isn't in the map renders nothing. */
 export function Sections({ sections }: { sections: Section[] | undefined }) {
   return (
-    <div data-brease-sections="sections">
+    <div {...sectionsAttrs}>
       {(sections ?? []).map((section, index) => {
         const Component = (sectionComponents as Record<string, AnyComponent | undefined>)[
           section.type

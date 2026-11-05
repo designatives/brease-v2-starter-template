@@ -22,9 +22,6 @@ export const ogLocale = (locale: string) =>
     .filter((p, i) => i === 0 || /^[A-Z]{2}$/.test(p))
     .join('_')
 
-/** Page IDs of the shared-content pages, used as prefixes in data-brease paths read from another page. */
-export const PAGE_IDS = { global: 'pg_global' } as const
-
 /** Slugs starting with "_" hold shared content and are never routed. */
 export const isInternalSlug = (slug: string) => slug.startsWith('_')
 
@@ -35,15 +32,24 @@ export const getPage = cache(
   },
 )
 
-/** Site-wide content, with empty defaults so the site renders before the `_global` page exists. */
-export const getGlobal = cache(async (locale: string): Promise<GlobalContent> => {
-  const content = (await brease.getPage<Partial<GlobalContent>>('_global', { locale }))?.content
-  return {
-    template: 'global',
-    siteName: content?.siteName ?? '',
-    footer: { text: '', copyright: '', ...content?.footer },
-  }
-})
+/**
+ * Site-wide content, with empty defaults so the site renders before the `_global` page exists; `pageId`
+ * (absent until then) prefixes its editor markers.
+ */
+export const getGlobal = cache(
+  async (locale: string): Promise<{ pageId?: string; content: GlobalContent }> => {
+    const page = await brease.getPage<Partial<GlobalContent>>('_global', { locale })
+    return {
+      pageId: page?.pageId,
+      content: {
+        template: 'global',
+        siteName: page?.content.siteName ?? '',
+        footer: { text: '', copyright: '', ...page?.content.footer },
+      },
+    }
+  },
+)
+export type Global = Awaited<ReturnType<typeof getGlobal>>
 
 /** A navigation's links in a locale (`main`: the header, `footer`: the footer). */
 export const getLinks = cache(async (key: string, locale: string) => {

@@ -1,3 +1,4 @@
+import { sectionAttrs } from 'brease-client'
 import React from 'react'
 
 import type { HeroSection } from '@/lib/content'
@@ -5,7 +6,7 @@ import type { HeroSection } from '@/lib/content'
 export function Hero({ section, index }: { section: HeroSection; index: number }) {
   const p = `sections.${index}`
   return (
-    <section className="hero" data-brease-section={section.id} data-brease-block={section.type}>
+    <section className="hero" {...sectionAttrs(section)}>
       <div className="container">
         <p className="eyebrow" data-brease={`${p}.eyebrow`}>
           {section.eyebrow}

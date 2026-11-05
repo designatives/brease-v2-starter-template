@@ -1,3 +1,4 @@
+import { sectionAttrs } from 'brease-client'
 import React from 'react'
 
 import type { ClosingSection } from '@/lib/content'
@@ -5,7 +6,7 @@ import type { ClosingSection } from '@/lib/content'
 export function Closing({ section, index }: { section: ClosingSection; index: number }) {
   const p = `sections.${index}`
   return (
-    <section className="closing" data-brease-section={section.id} data-brease-block={section.type}>
+    <section className="closing" {...sectionAttrs(section)}>
       <div className="container">
         <h2 data-brease={`${p}.title`}>{section.title}</h2>
         <p data-brease={`${p}.text`}>{section.text}</p>

@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next'
 
-import { SITE_URL } from '@/lib/site'
+import { getSite } from '@/lib/brease'
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const url = (await getSite().catch(() => null))?.url?.replace(/\/+$/, '')
   return {
     rules: [{ userAgent: '*', allow: '/', disallow: ['/api/'] }],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    ...(url ? { sitemap: `${url}/sitemap.xml` } : {}),
   }
 }

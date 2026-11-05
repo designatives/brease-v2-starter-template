@@ -7,15 +7,16 @@ Rules for editing this site with Brease. Keep them when you change templates.
 - Styling: one global stylesheet, `src/app/styles.css` (design tokens in `:root`). Font: Inter via `next/font/google` in `src/app/[[...path]]/layout.tsx`, used through `--sans`.
 
 ## Where content is read
-The site follows brease-client's "Recommended structure": one optional catch-all route serves every page in every locale, and locales are a Brease setting, not code. Don't add `[locale]` or `[slug]` folders, middleware or a proxy.
+The site follows brease-client's "Recommended structure": one optional catch-all route serves every page in every locale, and locales are a Brease setting, not code. Don't add `[locale]` or `[slug]` folders.
 
-- `src/lib/brease.ts`: the client and the cached loaders `getPage(slug, locale)`, `getGlobal(locale)`, `getLinks(navigationKey, locale)`. Server-side only.
-- `src/app/[[...path]]/page.tsx`: every page in every locale. `brease.route()` gives the locale and slug, the page's `content.template` picks the template from `src/brease/templates.tsx`. Slugs starting with `_` are never routed.
-- `src/app/[[...path]]/layout.tsx`: `<html lang>`, `LocaleProvider` (client components read the locale, its links and `href()` with `useLocale()` from `src/components/locale.tsx`), site SEO defaults, the font, the Brease toolbar loader.
-- `src/brease/templates.tsx`: one entry per page template: what it renders and, optionally, its metadata. Add a template here, in `src/lib/content.ts` and in `content.schema.json` together.
+- `src/lib/brease.ts`: the client and the cached loaders `getPage(slug, locale)`, `getGlobal(locale)` (`{ pageId, content }`), `getLinks(navigationKey, locale)`. Server-side only.
+- `src/app/[[...path]]/page.tsx`: every page in every locale. `brease.route()` gives the locale and slug, the page's `content.template` picks the template from `src/brease/templates.tsx`. Slugs starting with `_` are never routed. It also renders the page's structured data (`jsonLd`) and custom code (`customTags`) from `resolvedSeo`, which is final: no title template or home-page exception in code.
+- `src/app/[[...path]]/layout.tsx`: `<html lang>`, `LocaleProvider` (client components read the locale, its links and `href()` with `useLocale()` from `src/components/locale.tsx`), site SEO defaults (`metadataBase` from `site.url`), the font, the GA4 tag (`ga4Tag(site)`, only when it's on in Brease; consent starts denied until a cookie banner calls `grantAnalytics()`).
+- `src/brease/templates.tsx`: one entry per page template: what it renders. Add a template here, in `src/lib/content.ts` and in `content.schema.json` together.
 - `src/brease/sections/`: the section types a page can hold (see Sections).
 - `src/components/LocaleMenu.tsx`: the locale selector in the header; it shows only when more than one locale has content.
-- `src/app/sitemap.ts`, `src/app/robots.ts`, `next.config.ts` (redirects from Brease), `src/app/api/brease/revalidate/route.ts` (called by Brease after content-only releases).
+- `src/proxy.ts`: redirects managed in Brease, per request (`matchRedirect`), and other forms of a page's URL to its canonical one (`canonicalPath`).
+- `src/app/sitemap.ts` (`brease.sitemap(site.url)`), `src/app/robots.ts`, `src/app/api/brease/revalidate/route.ts` (called by Brease after content-only releases).
 
 ## Content model
 | Page (id) | Slug | Template | Holds |
@@ -48,10 +49,10 @@ The site follows brease-client's "Recommended structure": one optional catch-all
 `scripts/migrate-sections.mjs <in-dir> <out-dir>` moved the old fixed keys into `sections` (ids are hashes of `<pageId>:<old key>`, `<pageId>:body` for the page text). It is idempotent and validates its output.
 
 ## Picker attributes
-- `data-brease="<path>"` on every element that renders a content value: the JSON path inside the page's `content`, array indices as numbers: `title`, `sections.0.title`, `sections.1.items.2.text`.
-- Content read from another page is prefixed with that page's ID: `pg_global:siteName`.
-- Navigations: `data-brease="nav:main"` and `data-brease="nav:footer"` on the elements wrapping their links.
-- The element holding the list carries `data-brease-sections="sections"`. Each section's root carries `data-brease-section="<id>"` and `data-brease-block="<type>"`.
+- `data-brease={fieldPath('<path>')}` (or the plain path) on every element that renders a content value: the JSON path inside the page's `content`, array indices as numbers: `title`, `sections.0.title`, `sections.1.items.2.text`.
+- Content read from another page is prefixed with that page's ID, taken from the fetched page, never a fixed one: `fieldPath('siteName', global.pageId)`.
+- Navigations: `data-brease={navPath('main')}` and `data-brease={navPath('footer')}` on the elements wrapping their links.
+- The element holding the list carries `data-brease-sections="sections"`. (`sectionsAttrs`). Each section's root carries `data-brease-section="<id>"` and `data-brease-block="<type>"` (`sectionAttrs(section)`).
 - `data-brease-block="Header"` and `data-brease-block="Footer"` on the site-wide parts.
 
 ## Caching

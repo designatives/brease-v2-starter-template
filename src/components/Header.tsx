@@ -1,29 +1,23 @@
+import { fieldPath, navPath } from 'brease-client'
 import React from 'react'
 
-import type { NavLink } from '@/lib/brease'
-import { bp } from '@/lib/site'
+import type { Global, NavLink } from '@/lib/brease'
 
 import { HomeLink } from './HomeLink'
 import { LocaleMenu } from './LocaleMenu'
 
 /** The site name, the main navigation and the locale menu. */
-export function Header({
-  siteName,
-  links,
-  prefix,
-}: {
-  siteName: string
-  links: NavLink[]
-  prefix: string
-}) {
+export function Header({ global, links }: { global: Global; links: NavLink[] }) {
   return (
     <header className="site-header" data-brease-block="Header">
       <div className="container header-inner">
         <HomeLink className="site-name">
-          <span data-brease={bp(prefix, 'siteName')}>{siteName}</span>
+          <span data-brease={global.pageId ? fieldPath('siteName', global.pageId) : undefined}>
+            {global.content.siteName}
+          </span>
         </HomeLink>
         <div className="header-end">
-          <nav aria-label="Main" data-brease="nav:main">
+          <nav aria-label="Main" data-brease={navPath('main')}>
             {links.map((l) => (
               <a
                 key={`${l.href}-${l.label}`}
